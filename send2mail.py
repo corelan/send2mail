@@ -69,6 +69,19 @@ def getCurrentDir():
         pass
     return curdir
 
+def execOSCmdRetVal(cmdarray):
+    returncode = 0
+    outputlines = []
+    try:
+        p = subprocess.run(cmdarray, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True) 
+        returncode = p.returncode
+        outputobj = p.stdout.split('\n')
+        for thisline in outputobj:
+            outputlines.append(thisline.replace('\\n','').replace("'",""))
+    except Exception as e:
+        error_log("Error running %s: %s" % (cmdarray, str(e)))
+    return outputlines, returncode
+
 
 
 def showBanner():
@@ -322,7 +335,8 @@ if __name__ == "__main__":
     if "v" in args:
         verbose = True
 
-
+    updatecmd = ["git", "pull"]
+    execOSCmdRetVal(updatecmd)
     sendEMail(mailOptions)
     processErrors()
 
