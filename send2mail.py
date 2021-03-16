@@ -118,6 +118,7 @@ def showSyntax(args):
     print ("     -port <number>                 SMTP port to use. Defauls to 25")
     print ("     -v                             verbose output")
     print ("     -html                          send body as HTML")
+    print ("     -noupdate                      don't update via 'git pull' at startup")
     print ("")
     return
 
@@ -252,6 +253,8 @@ if __name__ == "__main__":
         exit(1)
 
     showBanner()
+    
+    doupdate = True
 
     global errorlog
     errorlog = []
@@ -334,9 +337,14 @@ if __name__ == "__main__":
 
     if "v" in args:
         verbose = True
-
-    updatecmd = ["git", "pull"]
-    execOSCmdRetVal(updatecmd)
+        
+    if "noupdate" in args:
+        doupdate = False
+        
+    if doupdate:
+        updatecmd = ["git", "pull"]
+       execOSCmdRetVal(updatecmd)
+    
     sendEMail(mailOptions)
     processErrors()
 
