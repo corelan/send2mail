@@ -343,7 +343,7 @@ if __name__ == "__main__":
         
     if doupdate:
         updatecmd = ["git", "pull"]
-       execOSCmdRetVal(updatecmd)
+        execOSCmdRetVal(updatecmd)
     
     sendEMail(mailOptions)
     processErrors()
